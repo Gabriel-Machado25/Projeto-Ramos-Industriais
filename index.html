@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ramos Industriais — Qualidade, Precisão e Soluções sob Medida</title>
+  <meta name="description" content="Ferramentas, tintas automotivas, chapas, corte a laser e muito mais. Duas unidades no Ceará: Tabuleiro do Norte e Limoeiro do Norte." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- PRELOADER -->
+  <div id="preloader" aria-hidden="true">
+    <div class="preloader__door preloader__door--top"></div>
+    <div class="preloader__door preloader__door--bottom"></div>
+    <div class="preloader__logo">
+      <img src="Ramos logo.jpg" alt="Ramos Industriais" />
+      <span>Carregando...</span>
+    </div>
+  </div>
+
+  <!-- SVG de engrenagem reutilizável -->
+  <svg style="display:none">
+    <symbol id="gear-icon" viewBox="0 0 200 200">
+      <path d="M100,55 a45,45 0 1,1 -0.01,0 Z" fill="none" stroke="currentColor" stroke-width="20"/>
+      <rect x="87" y="5"   width="26" height="24" rx="5" fill="currentColor"/>
+      <rect x="87" y="171" width="26" height="24" rx="5" fill="currentColor"/>
+      <rect x="5"  y="87"  width="24" height="26" rx="5" fill="currentColor"/>
+      <rect x="171" y="87" width="24" height="26" rx="5" fill="currentColor"/>
+      <rect x="28" y="28" width="24" height="26" rx="5" transform="rotate(45 40 41)" fill="currentColor"/>
+      <rect x="148" y="28" width="24" height="26" rx="5" transform="rotate(-45 160 41)" fill="currentColor"/>
+      <rect x="28" y="148" width="24" height="26" rx="5" transform="rotate(-45 40 161)" fill="currentColor"/>
+      <rect x="148" y="148" width="24" height="26" rx="5" transform="rotate(45 160 161)" fill="currentColor"/>
+    </symbol>
+  </svg>
+
+  <!-- HEADER -->
+  <header class="site-header" role="banner">
+    <div class="container header__inner">
+      <a href="#" class="header__logo" aria-label="Ramos Industriais">
+        <img src="Ramos logo.jpg" alt="Ramos Industriais" class="header__logo-img" />
+        <div class="header__brand">
+          <strong>RAMOS</strong>
+          <span>INDUSTRIAIS</span>
+        </div>
+      </a>
+      <nav class="header__nav" aria-label="Menu principal">
+        <ul>
+          <li><a href="#setores">Setores</a></li>
+          <li><a href="#marcas">Marcas</a></li>
+          <li><a href="#unidades">Unidades</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+
+      <!-- Botão PEDIR ORÇAMENTO — scroll suave para #unidades -->
+      <button class="btn btn--header-orcamento" id="btn-header-orcamento">
+        Pedir Orçamento
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== MODAL DE ESCOLHA DE UNIDADE ========== -->
+  <!--
+    Lógica: ao clicar em "Pedir orçamento" em qualquer card,
+    o JS abre este modal. O usuário escolhe a unidade e
+    window.open() abre o WhatsApp correspondente em nova aba.
+  -->
+  <div id="modal-unidade" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal__backdrop" id="modal-backdrop"></div>
+    <div class="modal__box">
+      <!-- Botão fechar -->
+      <button class="modal__close" id="modal-close" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+      <!-- Cabeçalho do modal -->
+      <div class="modal__header">
+        <img src="Ramos_logo.jpg" alt="Ramos Industriais" class="modal__logo" />
+        <h2 id="modal-title" class="modal__title">Escolha sua Unidade</h2>
+        <p class="modal__subtitle">Selecione a unidade mais próxima para falar pelo WhatsApp.</p>
+      </div>
+
+      <!-- Opções de unidade -->
+      <div class="modal__options">
+
+        <button class="modal__option" id="btn-tabuleiro" aria-label="Falar com Unidade Tabuleiro do Norte">
+          <div class="modal__option-icon" aria-hidden="true">📍</div>
+          <div class="modal__option-info">
+            <strong>Tabuleiro do Norte</strong>
+            <span>Matriz · (88) 9 8180-8861</span>
+            <span>Rua Cap. José Rodrigues, Nº 4598</span>
+          </div>
+          <div class="modal__option-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </button>
+
+        <button class="modal__option" id="btn-limoeiro" aria-label="Falar com Unidade Limoeiro do Norte">
+          <div class="modal__option-icon" aria-hidden="true">📍</div>
+          <div class="modal__option-info">
+            <strong>Limoeiro do Norte</strong>
+            <span>Filial · (88) 9 9951-4292</span>
+            <span>Rua Sabino Roberto, Nº 3686</span>
+          </div>
+          <div class="modal__option-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </button>
+
+      </div>
+
+      <p class="modal__note">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="14" height="14" style="display:inline;vertical-align:middle;margin-right:4px">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.86L.057 23.428a.5.5 0 0 0 .609.61l5.627-1.48A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/>
+        </svg>
+        Você será redirecionado para o WhatsApp
+      </p>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-title">
+
+    <!-- Engrenagens decorativas -->
+    <div class="hero__bg-gear hero__bg-gear--1" aria-hidden="true">
+      <svg viewBox="0 0 200 200"><use href="#gear-icon"/></svg>
+    </div>
+    <div class="hero__bg-gear hero__bg-gear--2" aria-hidden="true">
+      <svg viewBox="0 0 200 200"><use href="#gear-icon"/></svg>
+    </div>
+
+    <!-- Marca d'água: logo real com fundo removido -->
+    <div class="hero__watermark" aria-hidden="true">
+      <img class="hero__watermark-svg" src="ramos-logo-bg.png" alt="" />
+    </div>
+
+    <div class="container hero__content">
+      <p class="hero__eyebrow">Tabuleiro do Norte &amp; Limoeiro do Norte — CE</p>
+      <h1 id="hero-title" class="hero__title">
+        Qualidade,<br />
+        <em>Precisão</em><br />
+        e Soluções<br/>sob Medida.
+      </h1>
+      <p class="hero__subtitle">
+        Ferramentas, tintas automotivas, chapas e metais,<br />
+        corte a laser, calandragem e muito mais.
+      </p>
+
+      <!-- Botão único FALE CONOSCO → scroll para #unidades -->
+      <div class="hero__ctas">
+        <button class="btn btn--primary btn--cta btn--fale" id="btn-fale-conosco">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true" style="flex-shrink:0">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.86L.057 23.428a.5.5 0 0 0 .609.61l5.627-1.48A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/>
+          </svg>
+          Fale Conosco
+        </button>
+      </div>
+
+      <!-- Redes sociais abaixo do botão -->
+      <div class="hero__socials" aria-label="Redes sociais">
+        <span class="hero__socials-label">Nos siga:</span>
+        <a href="https://instagram.com/ramosindustriais" target="_blank" rel="noopener" class="hero__social-link" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+          <span>Instagram</span>
+        </a>
+        <a href="https://tiktok.com/@ramosindustriais" target="_blank" rel="noopener" class="hero__social-link" aria-label="TikTok">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/>
+          </svg>
+          <span>TikTok</span>
+        </a>
+        <a href="https://youtube.com/@ramosindustriais" target="_blank" rel="noopener" class="hero__social-link" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+            <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/>
+          </svg>
+          <span>YouTube</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero__divider" aria-hidden="true">
+      <svg viewBox="0 0 1440 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,0 L1440,0 L1440,30 L720,48 L0,30 Z" fill="#0a0a0a"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- SETORES -->
+  <section id="setores" class="setores" aria-labelledby="setores-title">
+    <img src="ramos-logo-bg.png" class="section-logo section-logo--setores" aria-hidden="true" alt="" />
+    <div class="container">
+      <header class="section-header">
+        <p class="section-eyebrow">Catálogo 2025</p>
+        <h2 id="setores-title" class="section-title">Nossos Setores</h2>
+      </header>
+
+      <div class="setores__grid">
+
+        <!-- Ferramentas & Máquinas -->
+        <article class="card" data-reveal>
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14,50 L38,26 A14,14 0 1,0 24,12 L32,20 L20,32 L12,24 A14,14 0 0,0 14,50Z"/>
+            </svg>
+          </div>
+          <h3 class="card__title">Ferramentas &amp; Máquinas</h3>
+          <p class="card__desc">Furadeiras, esmerilhadeiras, serras, plainas, lixadeiras e compressores. Marcas: Makita, DeWalt, Stanley, Bosch, Lynus, Motomil e Chiaperini.</p>
+          <button class="card__link" data-open-modal aria-haspopup="dialog">Pedir orçamento →</button>
+        </article>
+
+        <!-- Tintas Automotivas -->
+        <article class="card" data-reveal>
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <rect x="20" y="8" width="24" height="32" rx="4"/>
+              <path d="M26,40 L26,56 L38,56 L38,40"/>
+              <path d="M20,20 Q10,28 13,38" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="card__title">Tintas Automotivas</h3>
+          <p class="card__desc">Produção própria de tintas sob medida. Vernizes, primers, catalisadores, solventes e lixas. Marcas: Maza, AkzoNobel, Sherwin Williams, Farben e Renner.</p>
+          <button class="card__link" data-open-modal aria-haspopup="dialog">Pedir orçamento →</button>
+        </article>
+
+        <!-- Corte / Dobra / Laser -->
+        <article class="card" data-reveal>
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <rect x="8" y="20" width="48" height="6" rx="2"/>
+              <rect x="8" y="30" width="48" height="6" rx="2"/>
+              <line x1="32" y1="8" x2="32" y2="18"/>
+              <line x1="32" y1="36" x2="32" y2="56"/>
+              <circle cx="32" cy="7" r="3" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <h3 class="card__title">Corte, Dobra &amp; Laser</h3>
+          <p class="card__desc">Prensa viradeira, guilhotina e corte a laser em chapas em cada unidade. Lastros, paralamas, gavetas, caixas de ar e peças personalizadas.</p>
+          <button class="card__link" data-open-modal aria-haspopup="dialog">Pedir orçamento →</button>
+        </article>
+
+        <!-- Materiais Metalúrgicos -->
+        <article class="card" data-reveal>
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <rect x="8" y="14" width="48" height="8" rx="2"/>
+              <rect x="8" y="26" width="48" height="8" rx="2"/>
+              <rect x="8" y="38" width="48" height="8" rx="2"/>
+            </svg>
+          </div>
+          <h3 class="card__title">Materiais Metalúrgicos</h3>
+          <p class="card__desc">Barra lisa, chata, quadrada, perfil, cantoneira, metalon, tubo, bobina de zinco, lambril e ferragens completas para construção civil.</p>
+          <button class="card__link" data-open-modal aria-haspopup="dialog">Pedir orçamento →</button>
+        </article>
+
+        <!-- Calandragem -->
+        <article class="card" data-reveal>
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <ellipse cx="32" cy="32" rx="20" ry="10"/>
+              <line x1="12" y1="32" x2="12" y2="48"/>
+              <line x1="52" y1="32" x2="52" y2="48"/>
+              <ellipse cx="32" cy="48" rx="20" ry="10"/>
+            </svg>
+          </div>
+          <h3 class="card__title">Calandragem</h3>
+          <p class="card__desc">Formas cilíndricas de alta precisão em chapa. Tecnologia de ponta para atender indústrias, serralharias e projetos personalizados.</p>
+          <button class="card__link" data-open-modal aria-haspopup="dialog">Pedir orçamento →</button>
+        </article>
+
+        <!-- Soldas & Inversoras -->
+        <article class="card" data-reveal>
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <path d="M8,48 L28,20 L36,32 L44,20 L56,48"/>
+              <circle cx="32" cy="12" r="6" fill="currentColor" opacity=".25" stroke="none"/>
+              <line x1="32" y1="18" x2="32" y2="28"/>
+            </svg>
+          </div>
+          <h3 class="card__title">Soldas &amp; Inversoras</h3>
+          <p class="card__desc">Eletrodos MMA, MIG, TIG e corte a plasma. Marcas: ESAB, Lynus, Gerdau e Heavy Duty. Inversoras de 80A até 400A para qualquer aplicação.</p>
+          <button class="card__link" data-open-modal aria-haspopup="dialog">Pedir orçamento →</button>
+        </article>
+
+        <!-- EPI's -->
+        <article class="card" data-reveal>
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <path d="M32,8 L52,20 L52,36 Q52,52 32,58 Q12,52 12,36 L12,20 Z"/>
+              <path d="M22,32 L29,39 L42,26" stroke-width="3"/>
+            </svg>
+          </div>
+          <h3 class="card__title">EPI's &amp; Segurança</h3>
+          <p class="card__desc">Botas, luvas, máscaras, óculos, capacetes e protetores faciais. Marcas certificadas: 3M, Marluvas, Proteplus, Vonder, Kala e Worker.</p>
+          <button class="card__link" data-open-modal aria-haspopup="dialog">Pedir orçamento →</button>
+        </article>
+
+        <!-- Limpeza Automotiva / Abrasivos -->
+        <article class="card" data-reveal>
+          <div class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <circle cx="32" cy="32" r="18"/>
+              <circle cx="32" cy="32" r="10" stroke-dasharray="4 3"/>
+              <line x1="32" y1="8" x2="32" y2="14"/>
+              <line x1="32" y1="50" x2="32" y2="56"/>
+              <line x1="8" y1="32" x2="14" y2="32"/>
+              <line x1="50" y1="32" x2="56" y2="32"/>
+            </svg>
+          </div>
+          <h3 class="card__title">Abrasivos &amp; Limpeza</h3>
+          <p class="card__desc">Discos de corte, rebolos, lixas flap, escovas e shampoos automotivos. Lavadoras de alta pressão, politrizes e extratoras profissionais.</p>
+          <button class="card__link" data-open-modal aria-haspopup="dialog">Pedir orçamento →</button>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MARCAS -->
+  <section id="marcas" class="marcas" aria-labelledby="marcas-title">
+    <img src="ramos-logo-bg.png" class="section-logo section-logo--marcas" aria-hidden="true" alt="" />
+    <div class="container">
+      <header class="section-header">
+        <p class="section-eyebrow">Trabalhamos com</p>
+        <h2 id="marcas-title" class="section-title">As Melhores Marcas</h2>
+      </header>
+      <div class="marcas__grid" aria-label="Marcas parceiras">
+        <span>Makita</span>
+        <span>DeWalt</span>
+        <span>Stanley</span>
+        <span>Bosch</span>
+        <span>Lynus</span>
+        <span>Motomil</span>
+        <span>Chiaperini</span>
+        <span>Gedore</span>
+        <span>ESAB</span>
+        <span>Gerdau</span>
+        <span>Sherwin Williams</span>
+        <span>AkzoNobel</span>
+        <span>Maza</span>
+        <span>Farben</span>
+        <span>Renner</span>
+        <span>3M</span>
+        <span>Vonder</span>
+        <span>Rocast</span>
+        <span>Guepar</span>
+        <span>Ingco</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSÃO / VISÃO -->
+  <section class="missao" aria-label="Missão e Visão">
+    <img src="ramos-logo-bg.png" class="section-logo section-logo--missao" aria-hidden="true" alt="" />
+    <div class="unidades__gear" aria-hidden="true">
+      <svg viewBox="0 0 200 200"><use href="#gear-icon"/></svg>
+    </div>
+    <div class="container missao__inner">
+      <div class="missao__item" data-reveal>
+        <p class="section-eyebrow">Nossa Missão</p>
+        <h3>Fortalecer o trabalho de quem constrói, fabrica e transforma.</h3>
+        <p>Qualidade, variedade e atendimento especializado para oficinas, indústrias e profissionais de todas as áreas.</p>
+      </div>
+      <div class="missao__item" data-reveal>
+        <p class="section-eyebrow">Nossa Visão</p>
+        <h3>Ser referência regional no fornecimento industrial.</h3>
+        <p>A loja completa do profissional — antecipando necessidades e oferecendo soluções que acompanham o mercado.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- UNIDADES -->
+  <section id="unidades" class="unidades" aria-labelledby="unidades-title">
+    <img src="ramos-logo-bg.png" class="section-logo section-logo--unidades" aria-hidden="true" alt="" />
+    <div class="container">
+      <header class="section-header section-header--light">
+        <p class="section-eyebrow">Estamos no Ceará</p>
+        <h2 id="unidades-title" class="section-title">Nossas Unidades</h2>
+      </header>
+
+      <div class="unidades__grid">
+
+        <article class="unidade-card" data-reveal>
+          <div class="unidade-card__badge">Matriz</div>
+          <h3 class="unidade-card__title">Tabuleiro do Norte</h3>
+          <address class="unidade-card__address">
+            Rua Cap. José Rodrigues, Nº 4598<br />
+            Tabuleiro do Norte — CE
+          </address>
+          <ul class="unidade-card__info">
+            <li><span aria-hidden="true">📞</span>(88) 9 8180-8861</li>
+            <li><span aria-hidden="true">🕐</span>Seg–Sex: 07h–17h30 · Sáb: 07h–12h</li>
+            <li><span aria-hidden="true">⚙️</span>Prensa Viradeira · Guilhotina · Laser</li>
+          </ul>
+          <a href="https://wa.me/5588981808861" class="btn btn--primary" target="_blank" rel="noopener">
+            WhatsApp Tabuleiro
+          </a>
+        </article>
+
+        <div class="unidades__separator" aria-hidden="true"><span><img src="ramos-logo-bg.png" alt="" srcset="ramos logo" style="width: 120px;"></span></div>
+
+        <article class="unidade-card" data-reveal>
+          <div class="unidade-card__badge">Filial</div>
+          <h3 class="unidade-card__title">Limoeiro do Norte</h3>
+          <address class="unidade-card__address">
+            Rua Sabino Roberto, Nº 3686<br />
+            Limoeiro do Norte — CE
+          </address>
+          <ul class="unidade-card__info">
+            <li><span aria-hidden="true">📞</span>(88) 9 9951-4292</li>
+            <li><span aria-hidden="true">🕐</span>Seg–Sex: 07h–17h30 · Sáb: 07h–12h</li>
+            <li><span aria-hidden="true">⚙️</span>Prensa Viradeira · Guilhotina · Laser</li>
+          </ul>
+          <a href="https://wa.me/5588999514292" class="btn btn--primary" target="_blank" rel="noopener">
+            WhatsApp Limoeiro
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- REDES SOCIAIS -->
+  <section id="contato" class="social-strip" aria-label="Redes sociais">
+    <div class="container social-strip__inner">
+      <p class="social-strip__label">Nos acompanhe</p>
+      <nav aria-label="Redes sociais">
+        <ul class="social-strip__list">
+          <li>
+            <a href="https://instagram.com/ramosindustriais" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <rect x="2" y="2" width="20" height="20" rx="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+              <span>Instagram</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://tiktok.com/@ramosindustriais" target="_blank" rel="noopener" class="social-link" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/>
+              </svg>
+              <span>TikTok</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://youtube.com/@ramosindustriais" target="_blank" rel="noopener" class="social-link" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+                <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/>
+              </svg>
+              <span>YouTube</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://facebook.com/ramosindustriais" target="_blank" rel="noopener" class="social-link" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
+              <span>Facebook</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="ramos-logo-bg.png" alt="Ramos Industriais" class="footer__logo-img footer__logo-anim" />
+        <div>
+          <strong>RAMOS INDUSTRIAIS</strong>
+          <p>Qualidade, precisão e soluções sob medida.</p>
+        </div>
+      </div>
+      <div class="footer__links">
+        <p><a href="https://instagram.com/ramosindustriais" target="_blank" rel="noopener">@ramosindustriais</a></p>
+        <p>Tabuleiro: (88) 9 8180-8861</p>
+        <p>Limoeiro: (88) 9 9951-4292</p>
+      </div>
+      <p class="footer__copy">© <span id="year"></span> Ramos Industriais. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
